@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import img_x_blue from "../../imgs/icon/icon_X_blue.svg";
 import img_x_gray from "../../imgs/icon/icon_X_gray.svg";
+import img_plus from "../../imgs/icon/icon_plus.svg";
 
 function AddItem() {
   const [image, setImage] = useState(null);
@@ -73,13 +74,19 @@ function AddItem() {
         </div>
         <div className="m-auto mb-[24px] sm:min-w-[320px] md:min-w-[500px] xl:min-w-[800px] max-w-[800px]">
           <span className="text-[18px] font-[700]">삽입 이미지</span>
-          <div className="flex gap-[24px]">
+          <div className="flex gap-[24px] relative">
+            <div className="absolute bottom-[100px] left-[100px] flex flex-col items-center">
+              <img src={img_plus} alt="이미지 추가" />
+              <span>이미지 등록</span>
+            </div>
+
             <input
-              className="block w-[282px] h-[282px] bg-[var(--gray200)] rounded-md"
+              className="block w-[282px] h-[282px] bg-[var(--gray200)] rounded-md cursor-pointer"
               type="file"
               placeholder="이미지 등록"
               onChange={handleImageChange}
             />
+
             {preview && (
               <div className="block w-[282px] h-[282px] relative">
                 <img
@@ -138,7 +145,7 @@ function AddItem() {
             {tagList.map((tag, index) => (
               <li
                 key={index}
-                className="flex items-center bg-[var(--gray200)] text-gray-800 rounded-full px-3 py-1"
+                className="flex items-center bg-[var(--gray200)] text-gray-800 rounded-full px-3 py-1 mr-[5px] mb-[20px]"
               >
                 <span className="mr-2">{tag}</span>
                 <img

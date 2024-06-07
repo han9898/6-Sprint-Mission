@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import img_x_blue from "../../imgs/icon/icon_X_blue.svg";
+import img_x_gray from "../../imgs/icon/icon_X_gray.svg";
 
 function AddItem() {
   const [image, setImage] = useState(null);
@@ -6,6 +8,7 @@ function AddItem() {
   const [productDescription, setProductDescription] = useState("");
   const [price, setPrice] = useState("");
   const [tags, setTags] = useState("");
+  const [tagList, setTagList] = useState([]);
   const [isFormValid, setIsFormValid] = useState(false);
   const [preview, setPreview] = useState(null);
 
@@ -30,11 +33,26 @@ function AddItem() {
     }
   };
 
+  const handleRemovePreview = () => {
+    setPreview(null);
+  };
+
   const handlePriceChange = (e) => {
     const value = e.target.value;
     if (/^\d*$/.test(value)) {
       setPrice(value);
     }
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter" && tags.trim() !== "") {
+      setTagList([...tagList, tags.trim()]);
+      setTags("");
+    }
+  };
+
+  const handleRemoveTag = (index) => {
+    setTagList(tagList.filter((_, i) => i !== index));
   };
 
   return (
@@ -63,12 +81,18 @@ function AddItem() {
               onChange={handleImageChange}
             />
             {preview && (
-              <div className="block">
+              <div className="block w-[282px] h-[282px] relative">
                 <img
                   src={preview}
                   alt="미리보기"
-                  className="w-[282px] h-[282px] bg-[var(--gray200)] rounded-md object-cover"
+                  className="absolute w-[282px] h-[282px] bg-[var(--gray200)] rounded-md object-cover"
                 />
+                <img
+                  src={img_x_blue}
+                  onClick={handleRemovePreview}
+                  className="absolute top-2 right-2 text-white p-1 cursor-pointer"
+                  aria-label="미리보기 이미지 삭제"
+                ></img>
               </div>
             )}
           </div>
@@ -108,7 +132,24 @@ function AddItem() {
             placeholder="태그를 입력해주세요"
             value={tags}
             onChange={(e) => setTags(e.target.value)}
+            onKeyDown={handleKeyDown}
           />
+          <ul className="flex flex-wrap gap-[2px] mt-[2px]">
+            {tagList.map((tag, index) => (
+              <li
+                key={index}
+                className="flex items-center bg-[var(--gray200)] text-gray-800 rounded-full px-3 py-1"
+              >
+                <span className="mr-2">{tag}</span>
+                <img
+                  src={img_x_gray}
+                  alt="태그 삭제"
+                  className="w-[20px] h-[20px] cursor-pointer"
+                  onClick={() => handleRemoveTag(index)}
+                />
+              </li>
+            ))}
+          </ul>
         </div>
       </form>
     </>

@@ -10,7 +10,7 @@ function getLinkStyle({ isActive }) {
 function Header() {
   return (
     <header>
-      <div className="flex min-w-[375px] max-w-[1200px] items-center justify-between list-none gap-[8px] text-[18px] font-[700] text-[#4b5563] m-auto">
+      <div className="flex min-w-[375px] max-w-[1200px] items-center justify-between list-none gap-[8px] text-[18px] font-[700] text-[#4b5563] m-auto p-[24px]">
         <div className="flex gap-[32px]">
           <Link className="w-[153px]" to="/">
             <img src={logo} alt="판다마켓 로고" />

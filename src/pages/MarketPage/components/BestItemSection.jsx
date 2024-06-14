@@ -18,8 +18,8 @@ function BestItemSection() {
   const [item, setItem] = useState([]);
   const [pageSize, setPageSize] = useState(getPageSize());
 
-  const fetchDate = async ({ order, pageSize }) => {
-    const products = await getProduct({ order, pageSize });
+  const fetchDate = async ({ orderBy, pageSize }) => {
+    const products = await getProduct({ orderBy, pageSize });
     setItem(products.list);
   };
 
@@ -29,7 +29,7 @@ function BestItemSection() {
     };
 
     window.addEventListener("resize", handleResize);
-    fetchDate({ order: "favorite", pageSize });
+    fetchDate({ orderBy: "favorite", pageSize });
 
     return () => {
       window.removeEventListener("resize", handleResize);

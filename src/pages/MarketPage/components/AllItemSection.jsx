@@ -17,19 +17,19 @@ const getPageSize = () => {
 };
 
 function AllItemSection() {
-  const [order, setOrder] = useState("recent");
+  const [orderBy, setOrderBy] = useState("recent");
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(getPageSize());
   const [item, setItem] = useState([]);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const fetchDate = async ({ order, page, pageSize }) => {
-    const products = await getProduct({ order, page, pageSize });
+  const fetchDate = async ({ orderBy, page, pageSize }) => {
+    const products = await getProduct({ orderBy, page, pageSize });
     setItem(products.list);
   };
 
   const handleSelection = (option) => {
-    setOrder(option);
+    setOrderBy(option);
   };
 
   useEffect(() => {
@@ -40,12 +40,12 @@ function AllItemSection() {
     };
 
     window.addEventListener("recent", handleResize);
-    fetchDate({ order, page, pageSize });
+    fetchDate({ orderBy, page, pageSize });
 
     return () => {
       window.removeEventListener("resize", handleResize);
     };
-  }, [order, page, pageSize]);
+  }, [orderBy, page, pageSize]);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);

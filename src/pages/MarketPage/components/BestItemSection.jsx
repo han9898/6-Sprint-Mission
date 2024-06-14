@@ -5,9 +5,7 @@ import ItemCard from "./ItemCard";
 
 const getPageSize = () => {
   const width = window.innerWidth;
-  if (width < 400) {
-    return 1;
-  } else if (width < 800) {
+  if (width < 800) {
     return 1;
   } else if (width < 1280) {
     return 2;
@@ -17,31 +15,26 @@ const getPageSize = () => {
 };
 
 function BestItemSection() {
-  const pageFromStorage = Number(sessionStorage.getItem("page")) || 1;
-  const [order, setOrder] = useState("favorite");
   const [item, setItem] = useState([]);
-  const [page, setPage] = useState(pageFromStorage);
   const [pageSize, setPageSize] = useState(getPageSize());
 
-  useEffect(() => {
-    sessionStorage.setItem("page", page);
+  const fetchDate = async ({ order, pageSize }) => {
+    const products = await getProduct({ order, pageSize });
+    setItem(products.list);
+  };
 
+  useEffect(() => {
     const handleResize = () => {
       setPageSize(getPageSize());
     };
 
-    window.addEventListener("favorite", handleResize);
-
-    const fetchDate = async () => {
-      const products = await getProduct({ order, page, pageSize });
-      setItem(products.list);
-    };
-    fetchDate();
+    window.addEventListener("resize", handleResize);
+    fetchDate({ order: "favorite", pageSize });
 
     return () => {
       window.removeEventListener("resize", handleResize);
     };
-  }, [order, page, pageSize]);
+  }, [pageSize]);
 
   return (
     <div className="m-auto sm:min-w-[320px] md:min-w-[344px] lg:min-w-[500px] xl:min-w-[600px] max-w-[1200px]">

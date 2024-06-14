@@ -1,10 +1,5 @@
-export async function getProduct({ order, page, pageSize }) {
-  const params = new URLSearchParams({
-    page,
-    pageSize,
-    order,
-  });
-  const query = params.toString();
+export async function getProduct(params = {}) {
+  const query = new URLSearchParams(params).toString();
 
   try {
     const response = await fetch(

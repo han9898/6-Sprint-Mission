@@ -7,10 +7,8 @@ import DropdownList from "../../../components/DropdownList";
 
 const getPageSize = () => {
   const width = window.innerWidth;
-  if (width < 400) {
+  if (width < 800) {
     return 4;
-  } else if (width < 800) {
-    return 6;
   } else if (width < 1280) {
     return 6;
   } else {
@@ -19,12 +17,16 @@ const getPageSize = () => {
 };
 
 function AllItemSection() {
-  const pageFromStorage = Number(sessionStorage.getItem("page")) || 1;
   const [order, setOrder] = useState("recent");
-  const [page, setPage] = useState(pageFromStorage);
+  const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(getPageSize());
   const [item, setItem] = useState([]);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const fetchDate = async ({ order, page, pageSize }) => {
+    const products = await getProduct({ order, page, pageSize });
+    setItem(products.list);
+  };
 
   const handleSelection = (option) => {
     setOrder(option);
@@ -38,12 +40,7 @@ function AllItemSection() {
     };
 
     window.addEventListener("recent", handleResize);
-
-    const fetchDate = async () => {
-      const products = await getProduct({ order, page, pageSize });
-      setItem(products.list);
-    };
-    fetchDate();
+    fetchDate({ order, page, pageSize });
 
     return () => {
       window.removeEventListener("resize", handleResize);
@@ -58,7 +55,7 @@ function AllItemSection() {
     <div className="m-auto sm:min-w-[320px] md:min-w-[344px] lg:min-w-[500px] xl:min-w-[600px] max-w-[1200px]">
       <div className="flex gap-[12px] items-center justify-center">
         <h1 className="flex-1 text-[20px] font-[700] mb-[16px] mt-[24px]">
-          전체 상품
+          판매 중인 상품
         </h1>
         <input
           className="flex-none w-[325px] h-[42px] p-[10px] bg-[var(--gray100)] rounded-md"

@@ -19,7 +19,7 @@ export async function getProduct(params = {}) {
 export async function getProductDetail(productId) {
   try {
     const response = await fetch(
-      `https://panda-market-api.vercel.app/products?${productId}`
+      `https://panda-market-api.vercel.app/products/${productId}`
     );
     if (!response.ok) {
       throw new Error(`HTTP error: ${response.status}`);

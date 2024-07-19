@@ -3,7 +3,7 @@ import { getProduct } from "../../../api/api";
 import ItemCard from "./ItemCard";
 import { Link } from "react-router-dom";
 import DropdownList from "../../../components/DropdownList";
-//전체 상품
+import Pagination from "../../../components/Pagination";
 
 const getPageSize = () => {
   const width = window.innerWidth;
@@ -21,11 +21,13 @@ function AllItemSection() {
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(getPageSize());
   const [item, setItem] = useState([]);
+  const [totalPages, setTotalPages] = useState(0);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const fetchDate = async ({ orderBy, page, pageSize }) => {
+  const fetchData = async ({ orderBy, page, pageSize }) => {
     const products = await getProduct({ orderBy, page, pageSize });
     setItem(products.list);
+    setTotalPages(Math.ceil(products.totalCount / 10));
   };
 
   const handleSelection = (option) => {
@@ -39,8 +41,8 @@ function AllItemSection() {
       setPageSize(getPageSize());
     };
 
-    window.addEventListener("recent", handleResize);
-    fetchDate({ orderBy, page, pageSize });
+    window.addEventListener("resize", handleResize);
+    fetchData({ orderBy, page, pageSize });
 
     return () => {
       window.removeEventListener("resize", handleResize);
@@ -49,6 +51,10 @@ function AllItemSection() {
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
+  };
+
+  const onPageChange = (newPage) => {
+    setPage(newPage);
   };
 
   return (
@@ -62,7 +68,7 @@ function AllItemSection() {
           type="text"
           placeholder="검색할 상품을 입력해주세요"
           id="name"
-        ></input>
+        />
         <button className="flex-none w-[133px] h-[42px] p-[12px 23px] gap-[10px] rounded-md bg-[var(--blue50)] text-[16px] font-[600] text-[#fff] hover:bg-[var(--blue70)]">
           <Link to="/additem">상품 등록하기</Link>
         </button>
@@ -84,6 +90,11 @@ function AllItemSection() {
           <ItemCard item={item} key={`best-item-${item.id}`} />
         ))}
       </div>
+      <Pagination
+        totalPages={totalPages}
+        currentPage={page}
+        onPageChange={onPageChange}
+      />
     </div>
   );
 }

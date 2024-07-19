@@ -24,9 +24,10 @@ function AllItemSection() {
   const [item, setItem] = useState([]);
   const [totalPages, setTotalPages] = useState(0);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [keyword, setKeyword] = useState("");
 
-  const fetchData = async ({ orderBy, page, pageSize }) => {
-    const products = await getProduct({ orderBy, page, pageSize });
+  const fetchData = async ({ orderBy, page, pageSize, keyword }) => {
+    const products = await getProduct({ orderBy, page, pageSize, keyword });
     setItem(products.list);
     setTotalPages(Math.ceil(products.totalCount / 10));
   };
@@ -44,12 +45,12 @@ function AllItemSection() {
     };
 
     window.addEventListener("resize", handleResize);
-    fetchData({ orderBy, page, pageSize });
+    fetchData({ orderBy, page, pageSize, keyword });
 
     return () => {
       window.removeEventListener("resize", handleResize);
     };
-  }, [orderBy, page, pageSize]);
+  }, [orderBy, page, pageSize, keyword]);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -57,6 +58,10 @@ function AllItemSection() {
 
   const onPageChange = (newPage) => {
     setPage(newPage);
+  };
+
+  const handleInputChange = (e) => {
+    setKeyword(e.target.value);
   };
 
   return (
@@ -68,7 +73,8 @@ function AllItemSection() {
         <div className="relative w-full max-w-xs">
           <input
             className="w-full h-[42px] pl-[40px] pr-[10px] py-[8px] bg-gray-100 outline-none rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all duration-300"
-            type="text"
+            value={keyword}
+            onChange={handleInputChange}
             placeholder="검색할 상품을 입력해주세요"
             id="name"
           />

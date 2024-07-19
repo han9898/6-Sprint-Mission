@@ -18,7 +18,7 @@ export default function Pagination({ totalPages, currentPage, onPageChange }) {
       <button
         key={i}
         onClick={() => onPageChange(i)}
-        className={`h-[45px] w-[45px] rounded-[40px] text-gray-400 border focus:text-[--gray50] focus:bg-[--blue60] ${
+        className={`h-[45px] w-[45px] rounded-[40px] border focus:text-[--gray50] focus:bg-[--blue60] hover:bg-[--gray200] ${
           currentPage === i ? "font-[700] text-[--gray50] bg-[--blue60]" : ""
         }`}
         type="button"

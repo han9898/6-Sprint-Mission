@@ -43,7 +43,7 @@ function BestItemSection() {
       </h1>
       <div className="grid gap-[24px] grid-cols-1 md:grid-cols-2 xl:grid-cols-4">
         {item?.map((item) => (
-          <ItemCard item={item} key={`best-item-${item.id}`} />
+          <ItemCard item={item} key={`best-item-${item.id}`} size="best" />
         ))}
       </div>
     </div>
